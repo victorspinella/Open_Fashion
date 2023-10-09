@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_fashion/router.dart';
 import 'package:open_fashion/screens/blog_post.dart';
-import 'package:open_fashion/screens/numbers_page.dart';
 
 
 void main() {
