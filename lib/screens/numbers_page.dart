@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:number_paginator/number_paginator.dart';
-import 'package:open_fashion/screens/menu_screen.dart';
-import 'package:open_fashion/widgets/menu_button.dart';
-import 'package:open_fashion/widgets/social_icon_button.dart';
-import 'package:go_router/go_router.dart';
-  
+
+
 class NumbersPage extends StatefulWidget {
   const NumbersPage({Key? key}) : super(key: key);
 
@@ -12,200 +9,190 @@ class NumbersPage extends StatefulWidget {
   _NumbersPageState createState() => _NumbersPageState();
 }
 
-class _NumbersPageState extends State<NumbersPage> {
+class _NumbersPageState extends State<NumbersPage> with SingleTickerProviderStateMixin {
   final int _numPages = 5;
   int _currentPage = 0;
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: _numPages, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
     var pages = List.generate(
       _numPages,
-      (index) => TabBarView(
-        children: [
-              Scaffold(
-                    body: Center(
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 400),
-                        child: ListView.builder(
-                          itemCount: _images.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => SecondPage(heroTag: index)));
-                              },
+      (index) => Scaffold(
+        body: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: ListView.builder(
+              itemCount: _images.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SecondPage(heroTag: index)));
+                  },
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 200,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 250,
                               child: Row(
                                 children: [
-                                  Container(
-                                    width: 200,
-                                    child:
-                                      Column(
-                                        //crossAxisAlignment: CrossAxisAlignment.start, //adicionado agora, testando
-                                        children: [ //adicionado agora
-                                          Container(
-                                            height: 250,
-                                            child:
-                                              Row(
-                                              children: [
-                                                Hero(
-                                                  tag: index,
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(2),
-                                                    child: Image.asset( //.network
-                                                      _images[index],
-                                                      width: 190,
-                                                      fit:BoxFit.fill,//,
-                                                      //width: 200,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                              ],
-                                              ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text( 
-                                                _nomes[index],
-                                                textAlign: TextAlign.left,
-                                                style: const TextStyle(
-                                                  fontFamily: 'TenorSans',
-                                                  color: Color(0xFF000000),
-                                                  fontSize: 12
-                                                ), 
-                                              )
-                                            ]
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                _description[index],
-                                                textAlign: TextAlign.left,
-                                                style: const TextStyle(
-                                                  fontFamily: 'TenorSans',
-                                                  color: Color(0xFF555555),
-                                                  fontSize: 12
-                                                ), 
-                                              )
-                                            ],
-                                          ),
-                                          Container(
-                                            height: 35,
-                                            child:
-                                              const Row(
-                                                children: [
-                                                  Text(
-                                                    '\$120',
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: 'TenorSans',
-                                                      color: Color(0xFFDD8560),
-                                                      fontSize: 18
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                          ),
-                                        ],
+                                  Hero(
+                                    tag: index,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(2),
+                                      child: Image.asset(
+                                        _images[index],
+                                        width: 190,
+                                        fit: BoxFit.fill,
                                       ),
+                                    ),
                                   ),
-                                  Container(
-                                    width: 200,
-                                    child:
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start, //adicionado agora, testando
-                                        children: [ //adicionado agora
-                                          Container(
-                                            height: 250,
-                                            child:
-                                              Row(
-                                              children: [
-                                                Hero(
-                                                  tag: index,
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(2),
-                                                    child: Image.asset( //.network
-                                                      _images2[index],
-                                                      width:190,
-                                                      fit: BoxFit.fill//,
-                                                      //width: 200,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                              ],
-                                              ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text( 
-                                                _nomes2[index],
-                                                textAlign: TextAlign.left,
-                                                style: const TextStyle(
-                                                  fontFamily: 'TenorSans',
-                                                  color: Color(0xFF000000),
-                                                  fontSize: 12
-                                                ), 
-                                              )
-                                            ]
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                _description[index],
-                                                textAlign: TextAlign.left,
-                                                style: const TextStyle(
-                                                  fontFamily: 'TenorSans',
-                                                  color: Color(0xFF555555),
-                                                  fontSize: 12
-                                                ), //Theme.of(context).textTheme.headline6,
-                                              )
-                                            ],
-                                          ),
-                                          Container(
-                                            height: 35,
-                                            child:
-                                              const Row(
-                                                children: [
-                                                  Text(
-                                                    '\$120',
-                                                    textAlign: TextAlign.left,
-                                                    style: TextStyle(
-                                                      fontFamily: 'TenorSans',
-                                                      color: Color(0xFFDD8560),
-                                                      fontSize: 18
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                          ),
-                                        ],
-                                      ),
+                                  const SizedBox(width: 10),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  _nomes[index],
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontFamily: 'TenorSans',
+                                      color: Color(0xFF000000),
+                                      fontSize: 12),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  _description[index],
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontFamily: 'TenorSans',
+                                      color: Color(0xFF555555),
+                                      fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 35,
+                              child: const Row(
+                                children: [
+                                  Text(
+                                    '\$120',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontFamily: 'TenorSans',
+                                        color: Color(0xFFDD8560),
+                                        fontSize: 18),
                                   ),
                                 ],
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  )
-        ]
+                      Container(
+                        width: 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 250,
+                              child: Row(
+                                children: [
+                                  Hero(
+                                    tag: index,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(2),
+                                      child: Image.asset(
+                                        _images2[index],
+                                        width: 190,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  _nomes2[index],
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontFamily: 'TenorSans',
+                                      color: Color(0xFF000000),
+                                      fontSize: 12),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  _description[index],
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontFamily: 'TenorSans',
+                                      color: Color(0xFF555555),
+                                      fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 35,
+                              child: const Row(
+                                children: [
+                                  Text(
+                                    '\$120',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontFamily: 'TenorSans',
+                                        color: Color(0xFFDD8560),
+                                        fontSize: 18),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
       ),
     );
 
     return Scaffold(
-      body: pages[_currentPage],
-      // card for elevation
+      body: TabBarView(
+        controller: _tabController,
+        children: pages,
+      ),
       bottomNavigationBar: Card(
         margin: EdgeInsets.zero,
         elevation: 3,
         child: NumberPaginator(
-          // by default, the paginator shows numbers as center content
           numberPages: _numPages,
           onPageChange: (int index) {
             setState(() {
               _currentPage = index;
+              _tabController.animateTo(index); // Altere a aba quando a página mudar
             });
           },
           config: NumberPaginatorUIConfig(
@@ -223,6 +210,7 @@ class _NumbersPageState extends State<NumbersPage> {
     );
   }
 }
+
 final List<String> _images2 = [
   //Image.asset(
   //'assets/pic1.png',
@@ -318,4 +306,3 @@ class SecondPage extends StatelessWidget {
     );
   }
 }
-
